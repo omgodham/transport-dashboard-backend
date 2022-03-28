@@ -1,48 +1,48 @@
-const Trip = require("../models/trip");
+const Vehicle = require("../models/vehicle");
 
-exports.saveTripById = (req, res, next, id) => {
-  Trip.findById(id)
+exports.saveVehicleById = (req, res, next, id) => {
+  Vehicle.findById(id)
     .then((response) => {
       if (response) {
-        req.trip = response;
+        req.vehicle = response;
         next();
         return "";
       }
-      return res.status(404).json({ message: "Trip not found" });
+      return res.status(404).json({ message: "Vehicle not found" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
 
-exports.getTripById = (req, res) => {
-  return res.status(200).json(req.trip);
+exports.getVehicleById = (req, res) => {
+  return res.status(200).json(req.vehicle);
 };
 
-exports.createTrip = (req, res) => {
-  const trip = new Trip(req.body);
-  trip
+exports.createVehicle = (req, res) => {
+  const vehicle = new Vehicle(req.body);
+  vehicle
     .save()
     .then((response) => {
       if (response) return res.status(200).json(response);
 
-      return res.status(404).json({ message: "Trip creation failed" });
+      return res.status(404).json({ message: "Vehicle creation failed" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
 
-exports.updateTrip = (req, res) => {
-  Trip.findByIdAndUpdate(
-    req.trip._id,
+exports.updateVehicle = (req, res) => {
+  Vehicle.findByIdAndUpdate(
+    req.vehicle._id,
     { $set: req.body },
     { new: true, useFindAndModify: false }
   )
     .then((response) => {
       if (response) return res.status(200).json(response);
 
-      return res.status(404).json({ message: "Trip updation failed" });
+      return res.status(404).json({ message: "Vehicle updation failed" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });

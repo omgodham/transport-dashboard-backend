@@ -8,6 +8,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/users", require("./routes-js/user"));
 app.use("/trip", require("./routes-js/trip"));
+app.use("/company", require("./routes-js/company"));
+app.use("/vehicle", require("./routes-js/vehicle"));
 mongoose
   .connect(process.env.MONGODB_CONNECT, {
     useNewUrlParser: true,
