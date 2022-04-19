@@ -1,70 +1,71 @@
-const Vehicle = require("../models/vehicle");
+const Driver = require("../models/driver");
 
-exports.getAllVehicles = (req, res) => {
-	Vehicle.find({})
+exports.getAllDrivers = (req, res) => {
+	Driver.find({})
 		.then((response) => {
 			if (response) {
-				return res.status(200).json(response);
-			} else return res.status(500).json({ message: "Vehicle not found" });
+				res.status(200).json(response);
+			} else return res.status(404).json({ message: "Driver not found" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.saveVehicleById = (req, res, next, id) => {
-	Vehicle.findById(id)
+exports.saveDriverById = (req, res, next, id) => {
+	Driver.findById(id)
 		.then((response) => {
 			if (response) {
-				req.vehicle = response;
+				req.driver = response;
 				next();
 				return "";
 			}
-			return res.status(404).json({ message: "Vehicle not found" });
+			return res.status(404).json({ message: "Driver not found" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.getVehicleById = (req, res) => {
-	return res.status(200).json(req.vehicle);
+exports.getDriverById = (req, res) => {
+	return res.status(200).json(req.driver);
 };
 
-exports.createVehicle = (req, res) => {
-	const vehicle = new Vehicle(req.body.data);
-	vehicle
+exports.createDriver = (req, res) => {
+	const driver = new Driver(req.body.data);
+	driver
 		.save()
 		.then((response) => {
 			if (response) return res.status(200).json(response);
-			else return res.status(404).json({ message: "Vehicle creation failed" });
+
+			return res.status(404).json({ message: "Driver creation failed" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.updateVehicle = (req, res) => {
-	Vehicle.findByIdAndUpdate(
-		req.vehicle._id,
+exports.updateDriver = (req, res) => {
+	Driver.findByIdAndUpdate(
+		req.driver._id,
 		{ $set: req.body },
 		{ new: true, useFindAndModify: false }
 	)
 		.then((response) => {
 			if (response) return res.status(200).json(response);
 
-			return res.status(404).json({ message: "Vehicle updation failed" });
+			return res.status(404).json({ message: "Driver updation failed" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.deleteVehicle = (req, res) => {
-	Vehicle.findByIdAndDelete(req.body.vehicleId)
+exports.deleteDriver = (req, res) => {
+	Driver.findByIdAndDelete(req.body.driverId)
 		.then((response) => {
 			if (response) return res.status(200).json(response);
-			else return res.status(500).json({ message: "Vehicle deletion failed" });
+			else return res.status(500).json({ message: "Driver deletion failed" });
 		})
 		.catch((error) => {
 			return res.status(500).json({ message: "Internal Server Error" });

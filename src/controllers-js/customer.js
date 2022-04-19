@@ -1,13 +1,11 @@
 const Customer = require("../models/customer");
 
-exports.getAllCutomers = (req, res, next, id) => {
-	console.log("HERE");
-	Customer.find()
+exports.getAllCustomers = (req, res) => {
+	Customer.find({})
 		.then((response) => {
 			if (response) {
 				res.status(200).json(response);
-			}
-			return res.status(404).json({ message: "Customer not found" });
+			} else return res.status(404).json({ message: "Customer not found" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
@@ -34,7 +32,6 @@ exports.getCompanyById = (req, res) => {
 };
 
 exports.createCompany = (req, res) => {
-	console.log(req.body, "CUSTOMER");
 	const customer = new Customer(req.body.data);
 	customer
 		.save()
@@ -61,5 +58,16 @@ exports.updateCompany = (req, res) => {
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
+		});
+};
+
+exports.deleteCustomer = (req, res) => {
+	Customer.findByIdAndDelete(req.body.custId)
+		.then((response) => {
+			if (response) return res.status(200).json(response);
+			else return res.status(500).json({ message: "Customer deletion failed" });
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: "Internal Server Error" });
 		});
 };
