@@ -1,70 +1,71 @@
-const Vehicle = require("../models/vehicle");
+const Customer = require("../models/customer");
 
-exports.getAllVehicles = (req, res) => {
-	Vehicle.find({})
+exports.getAllCustomers = (req, res) => {
+	Customer.find({})
 		.then((response) => {
 			if (response) {
-				return res.status(200).json(response);
-			} else return res.status(500).json({ message: "Vehicle not found" });
+				res.status(200).json(response);
+			} else return res.status(404).json({ message: "Customer not found" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.saveVehicleById = (req, res, next, id) => {
-	Vehicle.findById(id)
+exports.saveCompanyById = (req, res, next, id) => {
+	Customer.findById(id)
 		.then((response) => {
 			if (response) {
-				req.vehicle = response;
+				req.customer = response;
 				next();
 				return "";
 			}
-			return res.status(404).json({ message: "Vehicle not found" });
+			return res.status(404).json({ message: "Customer not found" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.getVehicleById = (req, res) => {
-	return res.status(200).json(req.vehicle);
+exports.getCompanyById = (req, res) => {
+	return res.status(200).json(req.customer);
 };
 
-exports.createVehicle = (req, res) => {
-	const vehicle = new Vehicle(req.body.data);
-	vehicle
+exports.createCompany = (req, res) => {
+	const customer = new Customer(req.body.data);
+	customer
 		.save()
 		.then((response) => {
 			if (response) return res.status(200).json(response);
-			else return res.status(404).json({ message: "Vehicle creation failed" });
+
+			return res.status(404).json({ message: "Customer creation failed" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.updateVehicle = (req, res) => {
-	Vehicle.findByIdAndUpdate(
-		req.vehicle._id,
+exports.updateCompany = (req, res) => {
+	Customer.findByIdAndUpdate(
+		req.customer._id,
 		{ $set: req.body },
 		{ new: true, useFindAndModify: false }
 	)
 		.then((response) => {
 			if (response) return res.status(200).json(response);
 
-			return res.status(404).json({ message: "Vehicle updation failed" });
+			return res.status(404).json({ message: "Customer updation failed" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
 
-exports.deleteVehicle = (req, res) => {
-	Vehicle.findByIdAndDelete(req.body.vehicleId)
+exports.deleteCustomer = (req, res) => {
+	Customer.findByIdAndDelete(req.body.custId)
 		.then((response) => {
 			if (response) return res.status(200).json(response);
-			else return res.status(500).json({ message: "Vehicle deletion failed" });
+			else return res.status(500).json({ message: "Customer deletion failed" });
 		})
 		.catch((error) => {
 			return res.status(500).json({ message: "Internal Server Error" });
