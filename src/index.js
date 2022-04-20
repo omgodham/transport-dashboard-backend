@@ -11,29 +11,30 @@ app.use("/trip", require("./routes-js/trip"));
 app.use("/customer", require("./routes-js/customer"));
 app.use("/vehicle", require("./routes-js/vehicle"));
 app.use("/driver", require("./routes-js/driver"));
+app.use("/auth", require("./routes-js/auth"));
 
 // set headers
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader(
-		"Access-Control-Allow-Methods",
-		"GET, POST, PUT, PATCH, DELETE"
-	);
-	next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE"
+  );
+  next();
 });
 
 mongoose
-	.connect(process.env.MONGODB_CONNECT, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
-	.then(() => {
-		console.log("MongoDB Connnected");
-	})
-	.catch((err) => {
-		console.log(err, "Error Occured Connecting To DB");
-	});
+  .connect(process.env.MONGODB_CONNECT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("MongoDB Connnected");
+  })
+  .catch((err) => {
+    console.log(err, "Error Occured Connecting To DB");
+  });
 
 app.listen(process.env.PORT || 3003, () => {
-	console.log("server running on port 3003", process.env.PORT);
+  console.log("server running on port 3003", process.env.PORT);
 });
