@@ -18,9 +18,7 @@ exports.saveVehicleById = (req, res, next, id) => {
       if (response) {
         req.vehicle = response;
         next();
-        return "";
-      }
-      return res.status(404).json({ message: "Vehicle not found" });
+      } else return res.status(404).json({ message: "Vehicle not found" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
@@ -61,7 +59,7 @@ exports.updateVehicle = (req, res) => {
 };
 
 exports.deleteVehicle = (req, res) => {
-  Vehicle.findByIdAndDelete(req.body.vehicleId)
+  Vehicle.findByIdAndDelete(req.vehicle._id)
     .then((response) => {
       if (response) return res.status(200).json(response);
       else return res.status(500).json({ message: "Vehicle deletion failed" });

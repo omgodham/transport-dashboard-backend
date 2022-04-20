@@ -1,69 +1,70 @@
-const Customer = require("../models-js/customer");
+const Extracharge = require("../models-js/extracharge");
 
-exports.getAllCustomers = (req, res) => {
-  Customer.find({})
+exports.getAllExtraCharges = (req, res) => {
+  Extracharge.find({})
     .then((response) => {
       if (response) {
         res.status(200).json(response);
-      } else return res.status(404).json({ message: "Customer not found" });
+      } else return res.status(404).json({ message: "ExtraCharge not found" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
 
-exports.saveCompanyById = (req, res, next, id) => {
-  Customer.findById(id)
+exports.saveExtraChargeById = (req, res, next, id) => {
+  Extracharge.findById(id)
     .then((response) => {
       if (response) {
-        req.customer = response;
+        req.extraCharge = response;
         next();
-      } else return res.status(404).json({ message: "Customer not found" });
+      } else return res.status(404).json({ message: "ExtraCharge not found" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
 
-exports.getCompanyById = (req, res) => {
-  return res.status(200).json(req.customer);
+exports.getExtraChargeById = (req, res) => {
+  return res.status(200).json(req.extraCharge);
 };
 
-exports.createCompany = (req, res) => {
-  const customer = new Customer(req.body.data);
-  customer
+exports.createExtraCharge = (req, res) => {
+  const extraCharge = new Extracharge(req.body);
+  extraCharge
     .save()
     .then((response) => {
       if (response) return res.status(200).json(response);
 
-      return res.status(404).json({ message: "Customer creation failed" });
+      return res.status(404).json({ message: "ExtraCharge creation failed" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
 
-exports.updateCompany = (req, res) => {
-  Customer.findByIdAndUpdate(
-    req.customer._id,
+exports.updateExtraCharge = (req, res) => {
+  Extracharge.findByIdAndUpdate(
+    req.extraCharge._id,
     { $set: req.body },
     { new: true, useFindAndModify: false }
   )
     .then((response) => {
       if (response) return res.status(200).json(response);
 
-      return res.status(404).json({ message: "Customer updation failed" });
+      return res.status(404).json({ message: "ExtraCharge updation failed" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
 
-exports.deleteCustomer = (req, res) => {
-  Customer.findByIdAndDelete(req.customer._id)
+exports.deleteExtraCharge = (req, res) => {
+  Extracharge.findByIdAndDelete(req.extraCharge._id)
     .then((response) => {
       if (response) return res.status(200).json(response);
-      else return res.status(500).json({ message: "Customer deletion failed" });
+      else
+        return res.status(500).json({ message: "ExtraCharge deletion failed" });
     })
     .catch((error) => {
       return res.status(500).json({ message: "Internal Server Error" });

@@ -18,9 +18,7 @@ exports.saveTripById = (req, res, next, id) => {
       if (response) {
         req.trip = response;
         next();
-        return "";
-      }
-      return res.status(404).json({ message: "Trip not found" });
+      } else return res.status(404).json({ message: "Trip not found" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });

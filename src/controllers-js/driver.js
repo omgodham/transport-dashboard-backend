@@ -18,9 +18,7 @@ exports.saveDriverById = (req, res, next, id) => {
       if (response) {
         req.driver = response;
         next();
-        return "";
-      }
-      return res.status(404).json({ message: "Driver not found" });
+      } else return res.status(404).json({ message: "Driver not found" });
     })
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
@@ -62,7 +60,7 @@ exports.updateDriver = (req, res) => {
 };
 
 exports.deleteDriver = (req, res) => {
-  Driver.findByIdAndDelete(req.body.driverId)
+  Driver.findByIdAndDelete(req.driver._id)
     .then((response) => {
       if (response) return res.status(200).json(response);
       else return res.status(500).json({ message: "Driver deletion failed" });
