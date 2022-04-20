@@ -12,6 +12,7 @@ app.use("/customer", require("./routes-js/customer"));
 app.use("/vehicle", require("./routes-js/vehicle"));
 app.use("/driver", require("./routes-js/driver"));
 app.use("/auth", require("./routes-js/auth"));
+app.use("/extracharge", require("./routes-js/extracharge"));
 
 // set headers
 app.use((req, res, next) => {
