@@ -5,6 +5,7 @@ const {
 	createTrip,
 	updateTrip,
 	getAllTrips,
+	getTripByLr,
 } = require("../controllers-js/trip");
 const app = express();
 const router = express.Router();
@@ -12,7 +13,8 @@ const router = express.Router();
 router.param("trip", saveTripById);
 
 router.get("/get-trip/:trip", getTripById);
-router.get("/get-all-trips", getAllTrips);
+router.get("/get-trip-by-lr/:LrNo/", getTripByLr);
+router.post("/get-all-trips", getAllTrips);
 router.post("/create-trip", createTrip);
 router.patch("/update-trip/:trip", updateTrip);
 
