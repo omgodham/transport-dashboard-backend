@@ -33,6 +33,7 @@ const tripSchema = new Schema(
       checkNumber: String,
       bankName: String,
     },
+    totalPayment: Number,
   },
   { timestamps: true }
 );
