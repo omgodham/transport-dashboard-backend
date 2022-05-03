@@ -1,11 +1,17 @@
 const Trip = require("../models-js/trip");
 const Driver = require("../models-js/driver");
 exports.getAllTrips = (req, res) => {
-  console.log(req.body.startDate);
+  const todayStart = new Date(
+    new Date(req.body.startDate).setHours(0, 0, 0, 0)
+  );
+  const todayEnd = new Date(
+    new Date(req.body.endDate).setHours(23, 59, 59, 999)
+  );
+
   Trip.find({
     createdAt: {
-      $gte: req.body.startDate,
-      $lt: req.body.endDate,
+      $gte: todayStart,
+      $lt: todayEnd,
     },
   })
     .then((response) => {
