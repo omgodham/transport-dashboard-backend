@@ -1,11 +1,17 @@
 const Trip = require("../models-js/trip");
-
+const Driver = require("../models-js/driver");
 exports.getAllTrips = (req, res) => {
-	console.log(req.body.startDate);
+	const todayStart = new Date(
+		new Date(req.body.startDate).setHours(0, 0, 0, 0)
+	);
+	const todayEnd = new Date(
+		new Date(req.body.endDate).setHours(23, 59, 59, 999)
+	);
+
 	Trip.find({
 		createdAt: {
-			$gte: req.body.startDate,
-			$lt: req.body.endDate,
+			$gte: todayStart,
+			$lt: todayEnd,
 		},
 	})
 		.then((response) => {
@@ -21,6 +27,57 @@ exports.getAllTrips = (req, res) => {
 
 exports.getTripByLr = (req, res) => {
 	Trip.find({ lrNo: req.params.LrNo })
+		.then((response) => {
+			if (response) {
+				return res.status(200).json(response);
+			} else return res.status(500).json({ message: "Trip not found" });
+		})
+		.catch((error) => {
+			return res.status(404).json({ message: "Internal Server Error" });
+		});
+};
+
+exports.getTripByCustomer = (req, res) => {
+	const todayStart = new Date(
+		new Date(req.body.startDate).setHours(0, 0, 0, 0)
+	);
+	const todayEnd = new Date(
+		new Date(req.body.endDate).setHours(23, 59, 59, 999)
+	);
+
+	Trip.find({
+		customer: req.params.customer,
+		company: req.body.company,
+		createdAt: {
+			$gte: todayStart,
+			$lt: todayEnd,
+		},
+	})
+		.then((response) => {
+			if (response) {
+				return res.status(200).json(response);
+			} else return res.status(500).json({ message: "Trip not found" });
+		})
+		.catch((error) => {
+			return res.status(404).json({ message: "Internal Server Error" });
+		});
+};
+
+exports.getTripByDriver = (req, res) => {
+	const todayStart = new Date(
+		new Date(req.body.startDate).setHours(0, 0, 0, 0)
+	);
+	const todayEnd = new Date(
+		new Date(req.body.endDate).setHours(23, 59, 59, 999)
+	);
+
+	Trip.find({
+		driver: req.params.driver,
+		createdAt: {
+			$gte: todayStart,
+			$lt: todayEnd,
+		},
+	})
 		.then((response) => {
 			if (response) {
 				return res.status(200).json(response);
@@ -53,6 +110,14 @@ exports.createTrip = (req, res) => {
 	trip
 		.save()
 		.then((response) => {
+			Driver.findOneAndUpdate(
+				{ _id: req.body.data.driver },
+				{
+					$push: { trips: response._id },
+				},
+				{ new: true, useFindAndModify: false }
+			).exec();
+
 			if (response) return res.status(200).json(response);
 
 			return res.status(404).json({ message: "Trip creation failed" });
@@ -63,7 +128,6 @@ exports.createTrip = (req, res) => {
 };
 
 exports.updateTrip = (req, res) => {
-	console.log("update");
 	Trip.findByIdAndUpdate(
 		req.params.trip,
 		{ $set: req.body.data },

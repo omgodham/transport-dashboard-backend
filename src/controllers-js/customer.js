@@ -12,7 +12,7 @@ exports.getAllCustomers = (req, res) => {
 		});
 };
 
-exports.saveCompanyById = (req, res, next, id) => {
+exports.saveCustomerById = (req, res, next, id) => {
 	Customer.findById(id)
 		.then((response) => {
 			if (response) {
@@ -25,11 +25,11 @@ exports.saveCompanyById = (req, res, next, id) => {
 		});
 };
 
-exports.getCompanyById = (req, res) => {
+exports.getCustomerById = (req, res) => {
 	return res.status(200).json(req.customer);
 };
 
-exports.createCompany = (req, res) => {
+exports.createCustomer = (req, res) => {
 	const customer = new Customer(req.body.data);
 	customer
 		.save()
@@ -43,7 +43,7 @@ exports.createCompany = (req, res) => {
 		});
 };
 
-exports.updateCompany = (req, res) => {
+exports.updateCustomer = (req, res) => {
 	const customer = new Customer(req.body.data);
 	Customer.findByIdAndUpdate(
 		req.params.customer,

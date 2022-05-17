@@ -6,6 +6,7 @@ const driverSchema = new Schema(
 		phoneNo: String,
 		salary: String,
 		aadhar: String,
+		trips: [],
 		aadharCard: { data: Buffer, contentType: String },
 	},
 	{ timestamps: true }
