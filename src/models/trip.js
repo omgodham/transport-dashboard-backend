@@ -18,7 +18,7 @@ const tripSchema = new Schema(
 		advanceToDriver: Number,
 		advanceToTransportService: Number,
 		fuelCharge: Number,
-		advanceGivenByCompany: Number,
+		advanceGivenByCustomer: Number,
 		paymentReceived: Number,
 		totalPayment: Number,
 		paymentVoucherNumber: Number,
@@ -32,6 +32,10 @@ const tripSchema = new Schema(
 			checkNumber: String,
 			bankName: String,
 		},
+		company: String,
+		agent: String,
+		commission: Number,
+		driverExtraCharge: Number,
 	},
 	{ timestamps: true }
 );

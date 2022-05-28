@@ -31,6 +31,7 @@ exports.getDriverById = (req, res) => {
 
 exports.createDriver = (req, res) => {
 	const driver = new Driver(req.body.data);
+
 	driver
 		.save()
 		.then((response) => {
