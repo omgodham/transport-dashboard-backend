@@ -8,6 +8,7 @@ const driverSchema = new Schema(
 		aadhar: String,
 		trips: [],
 		aadharCard: { data: Buffer, contentType: String },
+		chargePerTrip: String,
 	},
 	{ timestamps: true }
 );
