@@ -134,10 +134,21 @@ exports.updateTrip = (req, res) => {
 		{ new: true, useFindAndModify: false }
 	)
 		.then((response) => {
-			console.log(req.params.trip);
 			if (response) return res.status(200).json(response);
 
 			return res.status(404).json({ message: "Trip updation failed" });
+		})
+		.catch((error) => {
+			return res.status(404).json({ message: "Internal Server Error" });
+		});
+};
+
+exports.deleteTrip = (req, res) => {
+	Trip.deleteOne({ _id: req.params.tripId })
+		.then((response) => {
+			if (response) return res.status(200).json(response);
+
+			return res.status(404).json({ message: "Trip deletion failed" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });

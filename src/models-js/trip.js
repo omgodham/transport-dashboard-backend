@@ -8,7 +8,9 @@ const tripSchema = new Schema(
 			default: new Date(),
 		},
 		customer: { type: mongoose.ObjectId, ref: "Customer" },
+		customerName: String,
 		vehicle: { type: mongoose.ObjectId, ref: "Vehicle" },
+		vehicleNo: String,
 		driver: { type: mongoose.ObjectId, ref: "Driver" },
 		pickup: String,
 		dropup: String,
@@ -41,6 +43,15 @@ const tripSchema = new Schema(
 		commission: Number,
 		driverExtraCharge: Number,
 		driverBhatta: Number,
+		lrCharges: {
+			type: Number,
+			default: 50,
+		},
+		selfTrip: {
+			type: Boolean,
+			default: false,
+		},
+		paymentToTransporter: Number,
 	},
 	{ timestamps: true }
 );

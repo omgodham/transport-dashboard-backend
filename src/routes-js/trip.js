@@ -8,6 +8,7 @@ const {
 	getTripByLr,
 	getTripByCustomer,
 	getTripByDriver,
+	deleteTrip,
 } = require("../controllers-js/trip");
 const app = express();
 const router = express.Router();
@@ -21,5 +22,6 @@ router.post("/get-trip-by-driver/:driver/", getTripByDriver);
 router.post("/get-all-trips", getAllTrips);
 router.post("/create-trip", createTrip);
 router.patch("/update-trip/:trip", updateTrip);
+router.patch("/delete-trip/:tripId", deleteTrip);
 
 module.exports = router;
