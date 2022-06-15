@@ -10,6 +10,7 @@ const {
   getTripByDriver,
   getPaymentOfTheMonth,
   getTotalPaymentOfTheMonthOfCustomer,
+  deleteTrip,
 } = require("../controllers-js/trip");
 const app = express();
 const router = express.Router();
@@ -24,5 +25,6 @@ router.post("/get-all-trips", getAllTrips);
 router.post("/create-trip", createTrip);
 router.patch("/update-trip/:trip", updateTrip);
 router.post("/get-payment-of-the-month", getPaymentOfTheMonth);
+router.patch("/delete-trip/:tripId", deleteTrip);
 
 module.exports = router;

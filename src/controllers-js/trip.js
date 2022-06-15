@@ -172,3 +172,15 @@ exports.getPaymentOfTheMonth = (req, res) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
 };
+
+exports.deleteTrip = (req, res) => {
+  Trip.deleteOne({ _id: req.params.tripId })
+    .then((response) => {
+      if (response) return res.status(200).json(response);
+
+      return res.status(404).json({ message: "Trip deletion failed" });
+    })
+    .catch((error) => {
+      return res.status(404).json({ message: "Internal Server Error" });
+    });
+};
