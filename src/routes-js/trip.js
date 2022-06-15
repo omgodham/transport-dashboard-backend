@@ -1,13 +1,15 @@
 const express = require("express");
 const {
-	saveTripById,
-	getTripById,
-	createTrip,
-	updateTrip,
-	getAllTrips,
-	getTripByLr,
-	getTripByCustomer,
-	getTripByDriver,
+  saveTripById,
+  getTripById,
+  createTrip,
+  updateTrip,
+  getAllTrips,
+  getTripByLr,
+  getTripByCustomer,
+  getTripByDriver,
+  getPaymentOfTheMonth,
+  getTotalPaymentOfTheMonthOfCustomer,
 } = require("../controllers-js/trip");
 const app = express();
 const router = express.Router();
@@ -21,5 +23,6 @@ router.post("/get-trip-by-driver/:driver/", getTripByDriver);
 router.post("/get-all-trips", getAllTrips);
 router.post("/create-trip", createTrip);
 router.patch("/update-trip/:trip", updateTrip);
+router.post("/get-payment-of-the-month", getPaymentOfTheMonth);
 
 module.exports = router;
