@@ -13,6 +13,7 @@ const customerSchema = new Schema(
       addressLine1: String,
       state: String,
     },
+    paymentDetails: [],
   },
   { timestamps: true }
 );
