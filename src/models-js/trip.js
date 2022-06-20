@@ -45,13 +45,14 @@ const tripSchema = new Schema(
 		driverBhatta: Number,
 		lrCharges: {
 			type: Number,
-			default: 50,
+			default: 100,
 		},
 		selfTrip: {
 			type: Boolean,
 			default: false,
 		},
 		paymentToTransporter: Number,
+		billPaid: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );
