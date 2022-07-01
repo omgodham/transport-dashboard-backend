@@ -151,6 +151,7 @@ exports.createTrip = async (req, res) => {
 };
 
 exports.updateTrip = (req, res) => {
+	console.log(req.body.data);
 	Trip.findByIdAndUpdate(
 		req.params.trip,
 		{ $set: req.body.data },
@@ -162,6 +163,7 @@ exports.updateTrip = (req, res) => {
 			return res.status(404).json({ message: "Trip updation failed" });
 		})
 		.catch((error) => {
+			console.log(error);
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
