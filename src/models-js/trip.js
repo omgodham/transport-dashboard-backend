@@ -53,6 +53,7 @@ const tripSchema = new Schema(
 		},
 		paymentToTransporter: Number,
 		billPaid: { type: Boolean, default: false },
+		pickupCompany: String,
 	},
 	{ timestamps: true }
 );

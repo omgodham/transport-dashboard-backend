@@ -23,8 +23,14 @@ exports.getAllTrips = (req, res) => {
 		});
 };
 
-exports.getTripByLr = (req, res) => {
-	Trip.find({ lrNo: req.params.LrNo })
+exports.searchTrip = (req, res) => {
+	Trip.find({
+		$or: [
+			{ billNo: req.params.query },
+			{ paymentVoucherNumber: req.params.query },
+			{ lrNo: req.params.query },
+		],
+	})
 		.then((response) => {
 			if (response) {
 				return res.status(200).json(response);
