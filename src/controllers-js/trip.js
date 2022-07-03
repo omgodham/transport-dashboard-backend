@@ -10,12 +10,15 @@ exports.getAllTrips = (req, res) => {
   const todayEnd = new Date(
     new Date(req.body.endDate).setHours(23, 59, 59, 999)
   );
-  Trip.find({
-    createdAt: {
-      $gte: todayStart,
-      $lt: todayEnd,
+  Trip.find(
+    {
+      createdAt: {
+        $gte: todayStart,
+        $lt: todayEnd,
+      },
     },
-  })
+    { challanImages: 0 }
+  )
     .then((response) => {
       if (response) {
         return res.status(200).json(response);
@@ -27,13 +30,16 @@ exports.getAllTrips = (req, res) => {
 };
 
 exports.searchTrip = (req, res) => {
-  Trip.find({
-    $or: [
-      { billNo: req.params.query },
-      { paymentVoucherNumber: req.params.query },
-      { lrNo: req.params.query },
-    ],
-  })
+  Trip.find(
+    {
+      $or: [
+        { billNo: req.params.query },
+        { paymentVoucherNumber: req.params.query },
+        { lrNo: req.params.query },
+      ],
+    },
+    { challanImages: 0 }
+  )
     .then((response) => {
       if (response) {
         return res.status(200).json(response);
@@ -52,14 +58,17 @@ exports.getTripByCustomer = (req, res) => {
     new Date(req.body.endDate).setHours(23, 59, 59, 999)
   );
 
-  Trip.find({
-    customer: req.params.customer,
-    company: req.body.company,
-    tripDate: {
-      $gte: todayStart,
-      $lt: todayEnd,
+  Trip.find(
+    {
+      customer: req.params.customer,
+      company: req.body.company,
+      tripDate: {
+        $gte: todayStart,
+        $lt: todayEnd,
+      },
     },
-  })
+    { challanImages: 0 }
+  )
     .then((response) => {
       if (response) {
         return res.status(200).json(response);
@@ -78,13 +87,16 @@ exports.getTripByDriver = (req, res) => {
     new Date(req.body.endDate).setHours(23, 59, 59, 999)
   );
 
-  Trip.find({
-    driver: req.params.driver,
-    createdAt: {
-      $gte: todayStart,
-      $lt: todayEnd,
+  Trip.find(
+    {
+      driver: req.params.driver,
+      createdAt: {
+        $gte: todayStart,
+        $lt: todayEnd,
+      },
     },
-  })
+    { challanImages: 0 }
+  )
     .then((response) => {
       if (response) {
         return res.status(200).json(response);
@@ -137,7 +149,7 @@ exports.createTrip = async (req, res) => {
   } else {
     trip.paymentVoucherNumber = number;
   }
-  console.log(trip);
+
   trip
     .save()
     .then((response) => {
@@ -160,7 +172,6 @@ exports.createTrip = async (req, res) => {
 };
 
 exports.updateTrip = (req, res) => {
-  console.log(req.body.data);
   Trip.findByIdAndUpdate(
     req.params.trip,
     { $set: req.body.data },
@@ -185,14 +196,17 @@ exports.getPaymentOfTheMonth = (req, res) => {
     new Date(req.body.endDate).setHours(23, 59, 59, 999)
   );
 
-  Trip.find({
-    customer: req.params.customer,
-    company: req.body.company,
-    tripDate: {
-      $gte: todayStart,
-      $lt: todayEnd,
+  Trip.find(
+    {
+      customer: req.params.customer,
+      company: req.body.company,
+      tripDate: {
+        $gte: todayStart,
+        $lt: todayEnd,
+      },
     },
-  })
+    { challanImages: 0 }
+  )
     .then((response) => {
       if (response) {
       } else return res.status(500).json({ message: "Trip not found" });
@@ -212,4 +226,41 @@ exports.deleteTrip = (req, res) => {
     .catch((error) => {
       return res.status(404).json({ message: "Internal Server Error" });
     });
+};
+
+exports.getTripsFromTheChallan = async (req, res) => {
+  //   let todayStart = req.body.startDate;
+  //   let todayEnd = req.body.endDate;
+
+  const todayStart = new Date(
+    new Date(req.body.startDate).setHours(0, 0, 0, 0)
+  );
+  const todayEnd = new Date(
+    new Date(req.body.endDate).setHours(23, 59, 59, 999)
+  );
+  let tempTrips = [];
+  if (req.body.status === "added")
+    tempTrips = await Trip.find(
+      {
+        "challanImages.0": { $exists: true },
+        createdAt: {
+          $gte: todayStart,
+          $lt: todayEnd,
+        },
+      },
+      { challanImages: 0 }
+    ).exec();
+  else
+    tempTrips = await Trip.find(
+      {
+        "challanImages.0": { $exists: false },
+        createdAt: {
+          $gte: todayStart,
+          $lt: todayEnd,
+        },
+      },
+      { challanImages: 0 }
+    ).exec();
+
+  return res.status(200).json(tempTrips);
 };
