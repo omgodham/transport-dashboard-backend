@@ -72,12 +72,10 @@ exports.deleteCustomer = (req, res) => {
     });
 };
 exports.getTotalPaymentOfTheMonthOfCustomer = async (req, res) => {
-  let trips = await Trip.find(
-    {
-      customer: req.body.customer,
-    },
-    { challanImages: 0 }
-  ).exec();
+  let trips = await ({
+    customer: req.body.customer,
+  },
+  { challanImages: 0 }).exec();
   let total = 0;
   let advance = 0;
   let remaining = 0;
