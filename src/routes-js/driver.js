@@ -6,6 +6,7 @@ const {
   updateDriver,
   getAllDrivers,
   deleteDriver,
+  getSalaryDetailsOfTheDriver,
 } = require("../controllers-js/driver");
 const app = express();
 const router = express.Router();
@@ -16,5 +17,8 @@ router.post("/create-driver", createDriver);
 router.delete("/delete-driver/:driver", deleteDriver);
 router.get("/get-all-drivers", getAllDrivers);
 router.patch("/update-driver/:driver", updateDriver);
-
+router.post(
+  "/get-salary-of-the-month-of-driver/:driver",
+  getSalaryDetailsOfTheDriver
+);
 module.exports = router;
