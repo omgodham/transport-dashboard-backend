@@ -87,9 +87,7 @@ exports.getSalaryDetailsOfTheDriver = async (req, res) => {
     if (JSON.stringify(trip.tripDate).includes(req.body.month)) {
       flag = true;
       advance += trip.advanceToDriver ? parseInt(trip.advanceToDriver) : 0;
-      remaining += req.driver.salary
-        ? parseInt(req.driver.salary) - advance
-        : 0;
+      remaining = req.driver.salary ? parseInt(req.driver.salary) - advance : 0;
       report.push({
         advanceGivenDate: trip.tripDate,
         advanceGiven: trip.advanceToDriver ? trip.advanceToDriver : 0,
