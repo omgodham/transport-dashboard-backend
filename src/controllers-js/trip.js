@@ -12,7 +12,7 @@ exports.getAllTrips = (req, res) => {
 	);
 	Trip.find(
 		{
-			createdAt: {
+			tripDate: {
 				$gte: todayStart,
 				$lt: todayEnd,
 			},
@@ -71,6 +71,7 @@ exports.getTripByCustomer = (req, res) => {
 	)
 		.then((response) => {
 			if (response) {
+				console.log(response);
 				return res.status(200).json(response);
 			} else return res.status(500).json({ message: "Trip not found" });
 		})
@@ -269,6 +270,31 @@ exports.getTripsByIds = (req, res) => {
 			if (response) return res.status(200).json(response);
 
 			return res.status(404).json({ message: "Trip deletion failed" });
+		})
+		.catch((error) => {
+			return res.status(404).json({ message: "Internal Server Error" });
+		});
+};
+
+exports.filterTripByCustomer = (req, res) => {
+	const todayStart = new Date(
+		new Date(req.body.startDate).setHours(0, 0, 0, 0)
+	);
+	const todayEnd = new Date(
+		new Date(req.body.endDate).setHours(23, 59, 59, 999)
+	);
+
+	Trip.find(
+		{
+			customer: req.params.customer,
+		},
+		{ challanImages: 0 }
+	)
+		.then((response) => {
+			if (response) {
+				console.log(response);
+				return res.status(200).json(response);
+			} else return res.status(500).json({ message: "Trip not found" });
 		})
 		.catch((error) => {
 			return res.status(404).json({ message: "Internal Server Error" });
