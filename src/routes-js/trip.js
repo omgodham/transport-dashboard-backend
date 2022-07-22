@@ -16,6 +16,7 @@ const {
 	searchTrip,
 	getTripsFromTheChallan,
 	getTripsByIds,
+	filterTripByCustomer,
 } = require("../controllers-js/trip");
 const app = express();
 const router = express.Router();
@@ -33,4 +34,5 @@ router.post("/get-payment-of-the-month", getPaymentOfTheMonth);
 router.patch("/delete-trip/:tripId", deleteTrip);
 router.post("/get-trips-depending-on-challan-addition", getTripsFromTheChallan);
 router.post("/get-trips-by-ids", getTripsByIds);
+router.post("/filter-trip-by-customer/:customer/", filterTripByCustomer);
 module.exports = router;
