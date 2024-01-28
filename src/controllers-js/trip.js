@@ -33,9 +33,10 @@ exports.searchTrip = (req, res) => {
 	Trip.find(
 		{
 			$or: [
-				{ billNo: req.params.query },
-				{ paymentVoucherNumber: req.params.query },
-				{ lrNo: req.params.query },
+				{ billNo: { $regex: req.params.query, $options: 'i' } }, 
+				{ paymentVoucherNumber: { $regex: req.params.query, $options: 'i' } },
+				{ lrNo: { $regex: req.params.query, $options: 'i' } },
+				{ customerName: { $regex: req.params.query, $options: 'i' } },
 			],
 		},
 		{ challanImages: 0 }
