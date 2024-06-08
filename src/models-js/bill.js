@@ -9,6 +9,10 @@ const billSchema = new Schema(
 		startDate: Date,
 		endDate: Date,
 		isPaid: { type: Boolean, default: false },
+		billDate: {
+			type: Date,
+			default: new Date(),
+		},
 	},
 	{ timestamps: true }
 );

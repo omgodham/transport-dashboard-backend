@@ -56,7 +56,12 @@ const tripSchema = new Schema(
     transporterName:String,
 		billPaid: { type: Boolean, default: false },
 		pickupCompany: String,
+		billDate: {
+			type: Date,
+			default: new Date(),
+		},
 	},
+	
 	{ timestamps: true }
 );
 
