@@ -75,3 +75,46 @@ exports.addTripToBill = async (req, res) => {
 			return res.status(404).json({ message: "Internal Server Error" });
 		});
 };
+
+exports.getBillsByCustomer = async (req) =>  {
+	const todayStart = new Date(
+		new Date(req.body.startDate).setHours(0, 0, 0, 0)
+	);
+	const todayEnd = new Date(
+		new Date(req.body.endDate).setHours(23, 59, 59, 999)
+	);
+	let query = {
+		customer: req.body.customer,
+		company: req.body.company,
+	}
+	if (req.body.billDate) {
+		query.billDate = {
+			$gte: todayStart,
+			$lt: todayEnd
+		};
+	} else {
+		query.createdAt= {
+			$gte: todayStart,
+			$lt: todayEnd,
+		}
+	}
+	return await Bill.find(query)
+		.then(async (response) => {
+			const tripsResponse = await Promise.all(response.map(async (bill) => {
+				const trips = await Trip.find({ _id: { $in: bill.trips } }).select('totalPayment lrCharges extraCharge');
+				   // Calculate the sum of specified fields
+				   const totalPaymentSum = trips.reduce((sum, trip) => sum + (trip.totalPayment || 0), 0);
+				   const lrChargesSum = trips.reduce((sum, trip) => sum + (trip.lrCharges || 0), 0);
+				   const extraChargeSum = trips.reduce((sum, trip) => sum + (trip.extraCharge || 0), 0);
+				return {
+					billId:bill._id,
+					billNo:bill.billNo,
+					billDate:bill.billDate ? bill.billDate : bill.createdAt, 
+					totalSumOfTrips : totalPaymentSum + lrChargesSum + extraChargeSum,
+					isPaid:bill.isPaid
+				};
+			}));
+			return tripsResponse
+		})
+		.catch((error) => error);
+};

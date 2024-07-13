@@ -18,7 +18,7 @@ exports.getAllTrips = (req, res) => {
 			},
 		},
 		{ challanImages: 0 }
-	)
+	).sort({ createdAt: -1 })
 		.then((response) => {
 			if (response) {
 				return res.status(200).json(response);
@@ -72,7 +72,7 @@ exports.getTripByCustomer = (req, res) => {
 	)
 		.then((response) => {
 			if (response) {
-				console.log(response);
+				// console.log(response);
 				return res.status(200).json(response);
 			} else return res.status(500).json({ message: "Trip not found" });
 		})

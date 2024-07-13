@@ -26,6 +26,7 @@ app.use("/auth", require("./routes-js/auth"));
 app.use("/extracharge", require("./routes-js/extracharge"));
 app.use("/company", require("./routes-js/company"));
 app.use("/bill", require("./routes-js/bill"));
+app.use("/yearlycustomerbill", require("./routes-js/yearlyCustomerBill"));
 
 // set headers
 app.use((req, res, next) => {
